@@ -24,13 +24,13 @@ TODO
               <i class="fa fa-ellipsis-v"></i>
             </span>
             <span class="text">{{ item.text }}</span>
-            {% if 'days' in item.end_date %}
+            {% if 'day' in item.end_date %}
             <small class="label label-success"><i class="fa fa-clock-o"></i>{{ item.end_date }}</small>
-            {% elif 'hours' in item.end_date %}
+            {% elif 'hour' in item.end_date %}
             <small class="label label-info"><i class="fa fa-clock-o"></i>{{ item.end_date }}</small>
-            {% elif 'minutes' in item.end_date %}
+            {% elif 'minute' in item.end_date %}
             <small class="label label-warning"><i class="fa fa-clock-o"></i>{{ item.end_date }}</small>
-            {% elif 'seconds' in item.end_date or 'expired' in item.end_date %}
+            {% elif 'second' in item.end_date or 'expired' in item.end_date %}
             <small class="label label-danger"><i class="fa fa-clock-o"></i>{{ item.end_date }}</small>
             {% endif %}
             <div class="tools">
