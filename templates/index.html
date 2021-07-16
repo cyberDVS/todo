@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+Home Page
+{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/background.css') }}">
+{% endblock %}
+{% block content %}
+<header class="masthead">
+    <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+        <div class="d-flex justify-content-center">
+            <div class="text-center">
+                <h2 class="text-black-50 mx-auto mt-2 mb-5">Create TODO list to organize your life!</h2>
+                <a class="btn btn-primary" href="{{ url_for('register') }}">Get Started</a>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}

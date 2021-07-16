@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ form_title }}
+{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+    <div class="container task-wrap p-md-5 p-4">
+        <h3 class="mb-4">{{ form_title }}</h3>
+        <div class="row">
+            {% if 'Login' in form_title %}
+              <form method="post" class="form" role="form" action="{{ url_for('login') }}">
+            {% else %}
+              <form method="post" class="form" role="form" action="{{ url_for('register') }}">
+            {% endif %}
+                {{ form.csrf_token }}
+              {% if 'Register' in form_title %}
+                <div class="col-md-6 offset-md-3">
+                    <div class="form-group">
+                        {{ form.name.label(class_='label') }}<br>
+                        {{ form.name(class_='form-control')}}
+                    </div>
+                </div>
+              {% endif %}
+                <div class="col-md-6 offset-md-3">
+                    <div class="form-group">
+                        {{ form.email.label(class_='label') }}<br>
+                        {{ form.email(class_='form-control')}}
+                    </div>
+                </div>
+              <div class="col-md-6 offset-md-3">
+                    <div class="form-group">
+                        {{ form.password.label(class_='label') }}<br>
+                        {{ form.password(class_='form-control')}}
+                    </div>
+                </div>
+                <div class="col-md-6 offset-md-3">
+                    <div class="form-group">
+                        {{ form.submit(class_='btn btn-primary') }}
+                    </div>
+                </div>
+              </form>
+            <div class="have-account">
+                <p>
+                    {% if 'Register' in form_title %}
+                    Already have an account? <a href="{{ url_for('login') }}">Log_in</a>
+                    {% else %}
+                    <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="flashes">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <p class="flash-{{ category }}">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="flashes">
+                {% for error in form.errors.email %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

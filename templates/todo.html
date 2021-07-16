@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}
+TODO
+{% endblock %}
+{% block header %}
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/todo.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="col-md-6">
+    <div class="box box-green">
+      <div class="box-header ui-sortable-handle" style="cursor: move;">
+        <i class="ion ion-clipboard"></i>
+        <h3 class="box-title">To Do List</h3>
+      </div>
+
+      <div class="box-body">
+        <ul id="sortable" class="todo-list ui-sortable">
+          {% for item in todo_list%}
+          <li id="item_{{ item.id }}">
+            <span class="handle ui-sortable-handle">
+              <i class="fa fa-ellipsis-v"></i>
+              <i class="fa fa-ellipsis-v"></i>
+            </span>
+            <span class="text">{{ item.text }}</span>
+            {% if 'days' in item.end_date %}
+            <small class="label label-success"><i class="fa fa-clock-o"></i>{{ item.end_date }}</small>
+            {% elif 'hours' in item.end_date %}
+            <small class="label label-info"><i class="fa fa-clock-o"></i>{{ item.end_date }}</small>
+            {% elif 'minutes' in item.end_date %}
+            <small class="label label-warning"><i class="fa fa-clock-o"></i>{{ item.end_date }}</small>
+            {% elif 'seconds' in item.end_date or 'expired' in item.end_date %}
+            <small class="label label-danger"><i class="fa fa-clock-o"></i>{{ item.end_date }}</small>
+            {% endif %}
+            <div class="tools">
+              <a href="{{ url_for('edit_task', id=item.id) }}"><i class="fa fa-edit"></i></a>
+              <a href="{{ url_for('delete_task', id=item.id) }}"><i class="fa fa-trash-o"></i></a>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="box-footer clearfix no-border">
+      <a href="{{ url_for('add_task') }}"><button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button></a>
+      </div>
+    </div>
+  </div>
+  <div class="flashes">
+      {% with messages = get_flashed_messages(with_categories=True) %}
+          {% if messages %}
+              {% for category, message in messages %}
+                  <p class="flash-{{ category }}">{{ message }}</p>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+  </div>
+
+</div>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#sortable" ).sortable({
+      update: function(event, ui) {
+        var postData = $(this).sortable('serialize');
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(postData),
+            dataType: 'json',
+            url: '/post_sort',
+        });
+      }
+    });
+  });
+
+</script>
+{% endblock %}

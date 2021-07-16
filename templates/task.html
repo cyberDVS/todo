@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/datetimepicker.css') }}" rel="stylesheet">
+<script src="{{ url_for('static', filename='js/bootstrap-datetimepicker.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container task-wrap p-md-5 p-4">
+        <h3 class="mb-4">Task</h3>
+        <div class="row">
+            {% if title == 'Add new task' %}
+            <form method="post" class="form" role="form" action="{{ url_for('add_task') }}">
+            {% else %}
+            <form method="post" class="form" role="form" action="{{ url_for('edit_task') }}">
+            {% endif %}
+                {{ form.csrf_token }}
+                {{ form.id }}
+                <div class="col-md-6 offset-md-3">
+                    <div class="form-group">
+                        {{ form.text.label(class_='label') }}<br>
+                        {{ form.text(cols=50, rows=4, class_='form-control') }}
+                    </div>
+                </div>
+                <div class="col-md-6 offset-md-3">
+                    <div class="form-group">
+                        {{ form.end_date.label(class_='label') }}<br>
+                        <div class="input-append date form_datetime" id="datetimepicker">
+                            {{ form.end_date(class_='form-control', readonly=True, type='text')}}
+                            <span class="add-on"><i class="icon-th"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 offset-md-3">
+                    <div class="form-group">
+                        {{ form.submit(class_='btn btn-primary') }}
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <script type="text/javascript">
+        $(".form_datetime").datetimepicker({
+            format: "yyyy-mm-dd hh:ii",
+            autoclose: true,
+        });
+    </script>
+{% endblock %}
